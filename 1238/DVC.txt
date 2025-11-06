@@ -1,0 +1,40 @@
+# 1. Initialize Git + DVC
+git init
+dvc init
+git add .dvc .dvcignore .gitignore
+git commit -m "init dvc"
+
+# 2. Track first version of dataset
+dvc add data.csv
+git add data.csv.dvc .gitignore
+git commit -m "dataset v1"
+
+# 3. Add local storage remote
+dvc remote add -d localstore ./dvcstore
+git commit -am "add local remote"
+
+# 4. Push dataset v1 to remote
+dvc push
+
+# --- Now you edit data.csv manually, creating version 2 ---
+
+# 5. Track second version
+dvc add data.csv
+git add data.csv.dvc
+git commit -m "dataset v2"
+
+# 6. Push dataset v2
+dvc push
+
+# --- To switch back to older version later ---
+
+# Show commit history
+git --no-pager log --oneline
+
+# Go to old version
+git checkout <old_commit_hash>
+dvc pull
+
+# Return to latest version
+git checkout main
+dvc pull
